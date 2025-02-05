@@ -35,12 +35,6 @@ class LeafNode(HTMLNode):
     # If the leaf node has no value, it should raise a ValueError. All leaf nodes must have a value.
     # If there is no tag (e.g. it's None), the value should be returned as raw text.
     # Otherwise, it should render an HTML tag.
-    # def to_html(self):
-    #     if self.value is None:
-    #         raise ValueError("LeafNode must have a value")
-    #     if self.tag is None:
-    #         return self.value
-    #     return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
     def to_html(self):
         if self.value is None and self.tag != "img":
             raise ValueError("LeafNode must have a value")
