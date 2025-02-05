@@ -1,3 +1,5 @@
+import re
+
 from textnode import TextType, TextNode
 from htmlnode import LeafNode
 
@@ -20,22 +22,31 @@ def text_node_to_html_node(text_node):
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for node in old_nodes:
+        delimiter_count = node.text.count(delimiter)
+        if delimiter_count < 2 and delimiter_count % 2 != 0: raise Exception("Invalid open and close delimiter count")
+        delimiter_indexes = [m.start() for m in re.finditer(re.escape(delimiter), node.text)]
+        substrings = []
+        for i in range(0, len(delimiter_indexes), 2):
+            substrings.append(node.text[delimiter_indexes[i] + 1:delimiter_indexes[i + 1]])
         if node.text_type == TextType.TEXT:
             parts = node.text.split(delimiter)
             parts = list(filter(lambda x: x != "", parts))
-            for i, part in enumerate(parts):
-                if i % 2 == 0:
-                    new_nodes.append(TextNode(part, TextType.TEXT))
-                else:
+            for part in parts:
+                if part in substrings:
                     new_nodes.append(TextNode(part, text_type))
+                else:
+                    new_nodes.append(TextNode(part, TextType.TEXT))
         else:
             new_nodes.append(node)
     return new_nodes
 
+def extract_markdown_images(text):
+    return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+
 def main():
     # TextNode(This is a text node, bold, https://www.boot.dev)
     textNode = TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
-    print(textNode)
+    return
 
 if __name__ == "__main__":
     main()

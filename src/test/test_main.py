@@ -45,6 +45,16 @@ class TestMain(unittest.TestCase):
         new_nodes = main.split_nodes_delimiter([node], "`", TextType.CODE)
         self.assertEqual(new_nodes, [TextNode("This is text with a ", TextType.TEXT), TextNode("code block", TextType.CODE)])
 
+    def test_split_nodes_delimiter_start_block(self):
+        node = TextNode("`code block` word", TextType.TEXT)
+        new_nodes = main.split_nodes_delimiter([node], "`", TextType.CODE)
+        self.assertEqual(new_nodes, [TextNode("code block", TextType.CODE), TextNode(" word", TextType.TEXT)])
+    
+    def test_extract_markdown_images(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        self.assertEqual(main.extract_markdown_images(text), [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")])
 
 if __name__ == "__main__":
+    # import sys
+    # unittest.main(argv=sys.argv[:1] + ['TestMain.test_split_nodes_delimiter_start_block'])
     unittest.main()
