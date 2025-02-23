@@ -56,8 +56,14 @@ class TestUtilsExtractMarkdownImages(unittest.TestCase):
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
         self.assertEqual(utils.extract_markdown_images(text), [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")])
 
+class TestUtilsMisellanious(unittest.TestCase):
+    def test_tuple_arr_into_dict(self):
+        array_of_tuples = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+        self.assertEqual(utils.tuple_arr_into_dict(array_of_tuples), {"rick roll": "https://i.imgur.com/aKaOqIh.gif", "obi wan": "https://i.imgur.com/fJRm4Vk.jpeg"})
+
 if __name__ == "__main__":
-    # import sys
+    import sys
     # unittest.main(argv=sys.argv[:1] + ['TestMain.test_split_nodes_delimiter_start_block'])
     # unittest.main(argv=sys.argv[:1] + ['TestUtilsExtractMarkdownImages'])
+    unittest.main(argv=sys.argv[:1] + ['TestUtilsMisellanious'])
     unittest.main()
